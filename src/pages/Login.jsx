@@ -1,16 +1,16 @@
-import { Link } from "react-router-dom"
-import ContainerAuth from "../components/layout/ContainerAuth"
-import { axiosMusic } from "../utils/configAxios";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import ContainerAuth from "../components/layout/ContainerAuth";
+import { login } from "../store/slices/user.slice";
 
 const Login = () => {
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    axiosMusic.post("/api/auth/login", data)
-      .then(({data}) => {console.log(data)})
-      .catch((err) => {console.log(err)})
+    dispatch(login(data, navigate));
   }
 
   return (

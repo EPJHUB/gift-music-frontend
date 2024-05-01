@@ -2,8 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import ContainerAuth from "../components/layout/ContainerAuth";
 import { axiosMusic } from "../utils/configAxios";
 
-const BASE_URL = "https://gift-music-backend-production.up.railway.app";
-
 const Register = () => {
   const navigate = useNavigate();
 
