@@ -16,11 +16,15 @@ const userSalice = createSlice({
         const newState = {...state, ...loginData}
         localStorage.setItem("user-gm", JSON.stringify(newState))
         return newState
+    },
+    logout: () => {
+      localStorage.removeItem('user-gm');
+      return initialState;
     }
   },
 });
 
-const {setLoginData} = userSalice.actions 
+export const {setLoginData, logout} = userSalice.actions 
 
 export const login = (data, navigate) => (dispatch) => {
   axiosMusic
