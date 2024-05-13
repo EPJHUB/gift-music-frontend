@@ -1,6 +1,10 @@
+import MainContainer from "../components/layout/MainContainer"
+
 const TrackDetail = () => {
   return (
-    <div>TrackDetail</div>
+    <MainContainer>
+      
+    </MainContainer>
   )
 }
 export default TrackDetail

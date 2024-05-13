@@ -1,52 +1,48 @@
 import { useEffect, useState } from "react";
-import {
-  FilterIcon,
-  SearchIcon
-} from "../components/icons/Svgs";
-import Header from "../components/shared/Header";
+import { useDispatch } from "react-redux";
+import MainContainer from "../components/layout/MainContainer";
+import SearchBar from "../components/shared/SearchBar";
 import TrackList from "../components/shared/TrackList";
+import { addTrack } from "../store/slices/playlistRecording.slice";
 import { axiosMusic } from "../utils/configAxios";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const handleAddTrack = (track) => {
+    dispatch(addTrack(track));
+  }
   const config = {
     headers: {
       Authorization: "JWT " + JSON.parse(localStorage.getItem("user-gm")).token,
     },
   };
 
-  const [randomTracks, setRandomTracks] = useState([]);
+  const [renderedTracks, setRenderedTracks] = useState([]);
 
   useEffect(() => {
     axiosMusic
       .get("/api/tracks/recommendations?seed_genres=reggaeton", config)
       .then(({ data }) => {
-        setRandomTracks(data.tracks);
+        setRenderedTracks(data.tracks);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target)
+    const querySearch = Object.fromEntries(formData);
+    axiosMusic.get(`/api/tracks?limit=10&q=${querySearch.q}`, config)
+    .then(({data}) => {setRenderedTracks(data.tracks.items)})
+    .catch((err) => {console.log(err)})
+    }
   return (
-    <section className="h-screen bg-black flex flex-col gap-20 overflow-x-hidden">
-      <Header />
-      <main className="h-auto w-[97%] bg-primary-dark rounded-3xl p-8 grid gap-6 self-center">
-        <form className="w-full bg-white/20 flex justify-between gap-4 p-4 rounded-xl mx-auto">
-          <button>
-            <SearchIcon />
-          </button>
-          <input
-            className="bg-transparent w-full flex-1"
-            type="text"
-            placeholder="Buscar"
-          />
-          <button htmlFor="">
-            <FilterIcon />
-          </button>
-        </form>
-        <TrackList tracks={randomTracks}/>
-      </main>
-    </section>
+    <MainContainer>
+      <SearchBar handleSearch={handleSearch}/>
+      <TrackList tracks={renderedTracks} showAddBtn={true} handleAddTrack={handleAddTrack}/>
+    </MainContainer>
   );
 };
 export default Home;

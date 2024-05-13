@@ -1,0 +1,23 @@
+.cassete > div {
+    backface-visibility: hidden;
+    transition: transform 1s;
+}
+.cassete > .front {
+    transform: perspective(500px) rotateY(180deg);
+}
+
+.cassete.front > .front {
+    transform: perspective(500px) rotateY(0deg);
+}
+
+.cassete > .back {
+    transform: perspective(500px) rotateY(180deg);
+}
+
+.cassete.back > .back {
+    transform: perspective(500px) rotateY(360deg);
+}
+
+
+
+
