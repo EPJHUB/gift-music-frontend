@@ -17,6 +17,7 @@ const TrackCard = ({ track, showRemoveBtn = false, showAddBtn = false, handleAdd
           <div>
             {track.artists.map((artist, index) => (
               <Link
+                to={`/artists/${artist.id}`}
                 key={artist.id}
                 className="text-white/40 hover:text-secondary"
               >
